@@ -1,4 +1,4 @@
-# recording-ts-next
+# recording-next
 
 ## Project setup
 ```
