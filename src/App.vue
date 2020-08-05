@@ -13,4 +13,8 @@
   margin: 0;
   padding: 0;
 }
+#nav {
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+}
 </style>
