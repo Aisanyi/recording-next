@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view/>
   </div>
 </template>
@@ -13,8 +9,10 @@
   margin: 0;
   padding: 0;
 }
-#nav {
-  -webkit-app-region: drag;
-  -webkit-user-select: none;
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
 }
 </style>
