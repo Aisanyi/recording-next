@@ -4,31 +4,30 @@ import { app, protocol, BrowserWindow } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+// 保存win 避免被垃圾回收机制回收
 let win
 
-// Scheme must be registered before the app is ready
+// 方案必须在应用程序准备好之前注册
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
 
 function createWindow() {
-  // Create the browser window.
+  // 创建窗口
   win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      // Use pluginOptions.nodeIntegration, leave this alone
-      // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
+      // 无视他  不重要
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
     },
-    frame: false
+    autoHideMenuBar : true
   })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
-    // Load the url of the dev server if in development mode
+    // 如果处于开发模式，则加载dev服务器的url
     win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+    // 打开调试控制台
     // if (!process.env.IS_TEST) win.webContents.openDevTools()
   } else {
     createProtocol('app')
@@ -58,18 +57,10 @@ app.on('activate', () => {
   }
 })
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+// 这个方法将在 Electron 完成后调用
+// 初始化并准备创建浏览器窗口。
+// 有些API只能在事件发生后使用
 app.on('ready', async () => {
-  // if (isDevelopment && !process.env.IS_TEST) {
-  //   // Install Vue Devtools
-  //   try {
-  //     await installExtension(VUEJS_DEVTOOLS)
-  //   } catch (e) {
-  //     console.error('Vue Devtools failed to install:', e.toString())
-  //   }
-  // }
   createWindow()
 })
 
