@@ -15,11 +15,11 @@ protocol.registerSchemesAsPrivileged([
 function createWindow() {
   // 创建窗口
   win = new BrowserWindow({
-    width: 400,
-    height: 600,
+    width: 1100,
+    height: 650,
     webPreferences: {
       // 无视他  不重要
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: true
     },
     autoHideMenuBar : true
   })

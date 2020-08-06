@@ -1,5 +1,9 @@
 <template>
   <div class="home">
+    <div class="nav">
+      <span :class="{ active: !data.desktop }" @click="madioUser">录像</span>
+      <span :class="{ active: data.desktop }" @click="madioDesktop">录屏</span>
+    </div>
     <video ref="video"></video>
     <div class="btn" v-if="!data.recordEnd" @click="recording">{{ data.isRecord ? '录制中' : '录制' }}</div>
     <div class="btn play" v-if="data.recordEnd" @click="play">播放</div>
@@ -18,11 +22,19 @@ export default {
     const video = ref(null)
     let data = reactive({
       isRecord: false,
-      recordEnd: false
+      recordEnd: false,
+      desktop: false
     })
 
     let madio = new Madio(video)
-    madio.create()
+    let videoConfig = {
+      audio: true,
+      video: {
+        width: { ideal: 1280, max: 1920 },
+        height: { ideal: 720, max: 1080 }
+      }
+    }
+    madio.create(videoConfig)
     function recording() {
       data.isRecord = !data.isRecord
       if (data.isRecord) {
@@ -42,7 +54,32 @@ export default {
     }
     function init() {
       data.recordEnd = false
-      madio.init()
+      madio.init(videoConfig)
+    }
+    function madioUser() {
+      if (!data.desktop | data.recordEnd) return
+      data.desktop = false
+      videoConfig = {
+        audio: true,
+        video: {
+          width: { ideal: 1280, max: 1920 },
+          height: { ideal: 720, max: 1080 }
+        }
+      }
+      madio.create(videoConfig)
+    }
+    function madioDesktop() {
+      if (data.desktop | data.recordEnd) return
+      data.desktop = true
+      videoConfig = {
+        audio: false,
+        video: {
+          mandatory: {
+            chromeMediaSource: 'desktop'
+          }
+        }
+      }
+      madio.create(videoConfig)
     }
     return {
       data,
@@ -50,7 +87,9 @@ export default {
       video,
       play,
       down,
-      init
+      init,
+      madioUser,
+      madioDesktop
     }
   }
 }
@@ -65,6 +104,26 @@ export default {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.2);
+  }
+  .nav {
+    width: 200px;
+    line-height: 30px;
+    font-size: 16px;
+    color: #fff;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    z-index: 9;
+    span {
+      margin-right: 20px;
+      cursor: pointer;
+      user-select: none;
+      &.active {
+        color: red;
+      }
+    }
   }
   .btn {
     width: 80px;

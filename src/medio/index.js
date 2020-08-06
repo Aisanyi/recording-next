@@ -2,20 +2,18 @@ export default class Medio {
   mediaRecorder = null
   chunks = []
   url = null
-  videoDom = null
-  constructor(videoDom, videoConfig = {
+  constructor(videoDom) {
+    this.videoDom = videoDom
+  }
+  // 创建录像
+  create(videoConfig = {
     audio: true,
     video: {
       width: { ideal: 1280, max: 1920 },
       height: { ideal: 720, max: 1080 }
     }
   }) {
-    this.videoDom = videoDom
-    this.videoConfig = videoConfig
-  }
-  // 创建
-  create() {
-    navigator.mediaDevices.getUserMedia(this.videoConfig).then(stream => {
+    navigator.mediaDevices.getUserMedia(videoConfig).then(stream => {
       this.videoDom.value.srcObject = stream
       this.videoDom.value.onloadedmetadata = () => {
         this.videoDom.value.play()
@@ -53,9 +51,9 @@ export default class Medio {
   }
 
   // 重新开始录制
-  init() {
+  init(videoConfig) {
     this.chunks = []
-    this.create()
+    this.create(videoConfig)
   }
 
   // 下载
