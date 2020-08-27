@@ -1,24 +1,17 @@
 # recording-next
 
-## Project setup
+## 安装依赖
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+### 运行
 ```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
+yarn electron:serve
 ```
 
-### Lints and fixes files
+### 打包
 ```
-yarn lint
+yarn electron:build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
